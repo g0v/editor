@@ -139,6 +139,10 @@ var app = new Vue({
                 console.log(result)
                 // do some stuff with result
             })
+            .fail(function (err) {
+                //handle error with err
+                console.log(err)
+            })
         },
 
         submit() {
