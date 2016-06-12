@@ -74,28 +74,32 @@ var schema = [
         name: "licenses",
         placeholder: "licenses",
         label: "licenses",
-        optional: false
+        optional: false,
+        array: true
     },
     {
         type: "text",
         name: "keywords",
         placeholder: "foo, bar",
         label: "keywords",
-        optional: false
+        optional: false,
+        array: true
     },
     {
         type: "text",
         name: "audience",
         placeholder: "public",
         label: "audience",
-        optional: false
+        optional: false,
+        array: true
     },
     {
         type: "text",
         name: "products",
         placeholder: "urls...",
         label: "products",
-        optional: false
+        optional: false,
+        array: true
     },
     {
         type: "text",
@@ -109,14 +113,16 @@ var schema = [
         name: "contributors",
         placeholder: "contributors...",
         label: "contributors",
-        optional: false
+        optional: false,
+        array: true
     },
     {
         type: "text",
         name: "needs",
         placeholder: "needs...",
         label: "Needs",
-        optional: false
+        optional: false,
+        array: true
     },
 ]
 
@@ -160,8 +166,12 @@ var app = new Vue({
             var result = {}
             schema.forEach((x) => {
                 var val = $(`input[name=${x.name}`).val()
-                if (val !== "")
-                result[x.name] = val
+                if (val !== "") {
+                    if (x.array) {
+                        val = val.split(',')
+                    }
+                    result[x.name] = val
+                }
             })
             app.result = JSON.stringify(result)
         }
