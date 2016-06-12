@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div v-for="i in schema">
+        {{ i.label }}: <input type="{{i.type}}" name="{{i.name}}" placeholder="{{i.placeholder}}" value="{{i.prefill}}">
+      </div>
+      <button v-on:click="submit" type="submit">Submit</button>
+      <pre>
+        {{ result }}
+      </pre>
+    </div>
+  </body>
+
+  <script src="index.js"></script>
+</html>
