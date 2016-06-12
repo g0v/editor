@@ -122,7 +122,13 @@ var schema = [
 
 var app = new Vue({
     el: '#app',
-    data: { message: "hello", schema: schema, result: "" },
+    data: {
+        message: "hello",
+        schema: schema,
+        result: "" ,
+        logged_in: false,
+        username: ""
+    },
     created() {
         schema.forEach(function(x,i) {
             var prefill = getParameterByName(x.name)
@@ -137,7 +143,12 @@ var app = new Vue({
             OAuth.initialize('M-bBVCTcOy9vIq7TRkJoL17N6LQ')
             OAuth.popup('github').done(function(result) {
                 console.log(result)
-                // do some stuff with result
+                result.get('/user')
+                .done(function(resp) {
+                    console.log(resp)
+                    app.username = resp.name
+                    app.logged_in = true
+                })
             })
             .fail(function (err) {
                 //handle error with err

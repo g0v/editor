@@ -6,7 +6,13 @@
   </head>
   <body>
     <div id="app">
-      <a href="#" v-on:click="login">Login with github</a>
+      <div v-if="logged_in">
+        hi, {{username}}
+      </div>
+      <div v-else>
+        <a href="#" v-on:click="login">Login with github</a>
+      </div>
+      <br />
       <div v-for="i in schema">
         {{ i.label }}: <input type="{{i.type}}" name="{{i.name}}" placeholder="{{i.placeholder}}" value="{{i.prefill}}">
       </div>
