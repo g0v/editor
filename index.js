@@ -135,6 +135,7 @@ var app = new Vue({
     methods: {
         login() {
             // TOOD: github log
+            window.open("https://github.com/login/oauth/authorize?client_id=f1ea3472fdfc11efed9e")
         },
 
         submit() {
