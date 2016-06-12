@@ -133,7 +133,9 @@ var app = new Vue({
         schema: schema,
         result: "" ,
         logged_in: false,
-        username: ""
+        username: "",
+        conn: undefined,
+        user: undefined
     },
     created() {
         schema.forEach(function(x,i) {
@@ -149,11 +151,13 @@ var app = new Vue({
             OAuth.initialize('M-bBVCTcOy9vIq7TRkJoL17N6LQ')
             OAuth.popup('github').done(function(result) {
                 console.log(result)
+                app.conn = result
                 result.get('/user')
                 .done(function(resp) {
                     console.log(resp)
                     app.username = resp.name
                     app.logged_in = true
+                    app.user = resp
                 })
             })
             .fail(function (err) {
@@ -174,6 +178,50 @@ var app = new Vue({
                 }
             })
             app.result = JSON.stringify(result)
+
+            this.commit("g0v.json", app.result)
+        },
+
+        commit(filename, content) {
+            var x = app.user
+            var currentHEADCommit
+            var newBlob
+            app.conn.get(`/repos/${x.login}/metadata-editor/git/refs/heads/master`)
+            .then(function (currentHEAD) {
+                console.log(content)
+                return app.conn.get(currentHEAD.object.url)
+            })
+            .then(function (HEADCommit) {
+                currentHEADCommit = HEADCommit
+                return app.conn.post(`/repos/${x.login}/metadata-editor/git/blobs`, {data: JSON.stringify({content: content, encoding: "utf-8"})})
+            })
+            .then(function (blob) {
+                newBlob = blob
+                return app.conn.get(currentHEADCommit.tree.url)
+            })
+            .then(function (currentHEADtree) {
+                return app.conn.post(`/repos/${x.login}/metadata-editor/git/trees`, {data: JSON.stringify({base_tree: currentHEADtree.tree.sha, tree: [
+                    {
+                        path: "g0v.json",
+                        mode: "100644",
+                        type: "blob",
+                        sha: newBlob.sha
+                    }
+                ]})})
+            })
+            .then(function (newTree) {
+                console.log('new tree', newTree.tree[0].sha)
+                return app.conn.post(`/repos/${x.login}/metadata-editor/git/commits`, { data: JSON.stringify({
+                    message: "update g0v.json",
+                    tree: newTree.tree[0].sha,
+                    parents: [currentHEADCommit.sha]})})
+            })
+            .then(function (newCommit) {
+                return app.patch(`/repos/${x.login}/metadata-editor/git/refs/master/HEAD`, { data: JSON.stringify({sha: newCommit.sha})})
+            })
+            .then(function (newHEAD) {
+                console.log("done!!")
+            })
         }
     }
 })
@@ -187,3 +235,4 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
