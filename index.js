@@ -210,17 +210,18 @@ var app = new Vue({
                 ]})})
             })
             .then(function (newTree) {
-                console.log('new tree', newTree.tree[0].sha)
+                console.log('new tree', newTree.sha)
                 return app.conn.post(`/repos/${x.login}/metadata-editor/git/commits`, { data: JSON.stringify({
                     message: "update g0v.json",
-                    tree: newTree.tree[0].sha,
+                    tree: newTree.sha,
                     parents: [currentHEADCommit.sha]})})
             })
             .then(function (newCommit) {
-                return app.patch(`/repos/${x.login}/metadata-editor/git/refs/master/HEAD`, { data: JSON.stringify({sha: newCommit.sha})})
+                console.log('newCommit', newCommit)
+                return app.conn.patch(`/repos/${x.login}/metadata-editor/git/refs/heads/master`, { data: JSON.stringify({sha: newCommit.sha})})
             })
             .then(function (newHEAD) {
-                console.log("done!!")
+                console.log('newHEAD', newHEAD)
             })
         }
     }
