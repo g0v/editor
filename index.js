@@ -186,6 +186,7 @@ var app = new Vue({
             var x = app.user
             var currentHEADCommit
             var newBlob
+            var branch
             app.conn.get(`/repos/${x.login}/metadata-editor/git/refs/heads/master`)
             .then(function (currentHEAD) {
                 console.log(content)
@@ -218,10 +219,16 @@ var app = new Vue({
             })
             .then(function (newCommit) {
                 console.log('newCommit', newCommit)
-                return app.conn.post(`/repos/${x.login}/metadata-editor/git/refs`, { data: JSON.stringify({sha: newCommit.sha, ref: `refs/heads/update-g0v-json-${Date.now()}`})})
+                branch = `update-g0v-json-${Date.now()}`
+                return app.conn.post(`/repos/${x.login}/metadata-editor/git/refs`, { data: JSON.stringify({sha: newCommit.sha, ref: `refs/heads/${branch}`})})
             })
-            .then(function (newHEAD) {
-                console.log('newHEAD', newHEAD)
+            .then(function (newRef) {
+                return app.conn.post(`/repos/${x.login}/metadata-editor/pulls`, { data: JSON.stringify({
+                    title: "update g0v.json",
+                    body: "this is a pull request from metadata-editor",
+                    head: `${x.login}:${branch}`,
+                    base: `master`
+                })})
             })
         }
     }
