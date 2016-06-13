@@ -200,7 +200,7 @@ var app = new Vue({
                 return app.conn.get(currentHEADCommit.tree.url)
             })
             .then(function (currentHEADtree) {
-                return app.conn.post(`/repos/${x.login}/metadata-editor/git/trees`, {data: JSON.stringify({base_tree: currentHEADtree.tree.sha, tree: [
+                return app.conn.post(`/repos/${x.login}/metadata-editor/git/trees`, {data: JSON.stringify({base_tree: currentHEADtree.sha, tree: [
                     {
                         path: "g0v.json",
                         mode: "100644",
@@ -218,7 +218,7 @@ var app = new Vue({
             })
             .then(function (newCommit) {
                 console.log('newCommit', newCommit)
-                return app.conn.patch(`/repos/${x.login}/metadata-editor/git/refs/heads/master`, { data: JSON.stringify({sha: newCommit.sha})})
+                return app.conn.patch(`/repos/${x.login}/metadata-editor/git/refs/heads/master`, { data: JSON.stringify({sha: newCommit.sha, force: true})})
             })
             .then(function (newHEAD) {
                 console.log('newHEAD', newHEAD)
