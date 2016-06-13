@@ -218,7 +218,7 @@ var app = new Vue({
             })
             .then(function (newCommit) {
                 console.log('newCommit', newCommit)
-                return app.conn.patch(`/repos/${x.login}/metadata-editor/git/refs/heads/master`, { data: JSON.stringify({sha: newCommit.sha, force: true})})
+                return app.conn.post(`/repos/${x.login}/metadata-editor/git/refs`, { data: JSON.stringify({sha: newCommit.sha, ref: `refs/heads/update-g0v-json-${Date.now()}`})})
             })
             .then(function (newHEAD) {
                 console.log('newHEAD', newHEAD)
