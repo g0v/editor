@@ -68,16 +68,15 @@ var app = new Vue({
             var newBlob
             var branch
             var fork
-            app.conn.post(`/repos/${app.repo}/forks`)
-            .then(function (user_fork) {
+            new Promise(function(out_resolve, reject) {
+                app.conn.post(`/repos/${app.repo}/forks`)
+                .done(function (user_fork) {
                 fork = user_fork
-                // wait until fork complete
-                var delay = new Promise(function(resolve, reject) {
-                    setTimeout(function() {
-                        resolve(true)
-                    }, 3000)
                 })
-                return delay
+                // wait until fork complete
+                setTimeout(function() {
+                    out_resolve(0)
+                }, 3000)
             })
             .then(function() {
                 return app.conn.get(`/repos/${x.login}/${fork.name}/git/refs/heads/master`)
@@ -120,6 +119,8 @@ var app = new Vue({
                     head: `${x.login}:${branch}`,
                     base: `master`
                 })})
+            }).then(function () {
+                alert('PR created')
             })
         }
     }
