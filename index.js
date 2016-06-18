@@ -32,11 +32,9 @@ var app = new Vue({
         login() {
             OAuth.initialize(oauthKey)
             OAuth.popup('github').done(function(result) {
-                console.log(result)
                 app.conn = result
                 result.get('/user')
                 .done(function(resp) {
-                    console.log(resp)
                     app.username = resp.name
                     app.logged_in = true
                     app.user = resp
@@ -74,6 +72,14 @@ var app = new Vue({
             .then(function (user_fork) {
                 fork = user_fork
                 // wait until fork complete
+                var delay = new Promise(function(resolve, reject) {
+                    setTimeout(function() {
+                        resolve(true)
+                    }, 3000)
+                })
+                return delay
+            })
+            .then(function() {
                 return app.conn.get(`/repos/${x.login}/${fork.name}/git/refs/heads/master`)
             })
             .then(function (currentHEAD) {
