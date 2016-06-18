@@ -6,13 +6,13 @@
   </head>
   <body>
     <div id="app">
-      <br />
       <div>
         Repo (ooo/xxx): <input v-model="repo">
       </div>
       <div v-for="i in schema">
         {{ i.label }}: <input type="{{i.type}}" name="{{i.name}}" placeholder="{{i.placeholder}}" value="{{i.prefill}}">
       </div>
+      <br />
       <div v-if="logged_in">
         <button v-on:click="submit" type="submit">建立 Pull Request</button>
       </div>
