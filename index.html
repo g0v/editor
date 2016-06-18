@@ -25,7 +25,12 @@
       </div>
       <br />
       <div class="submit" v-if="logged_in">
-        <button v-on:click="submit" type="submit">建立 Pull Request</button>
+        <div v-if="submitting">
+          <button class="submitting">建立中...</button>
+        </div>
+        <div v-else>
+          <button id="submit-button" v-on:click="submit" type="submit">建立 Pull Request</button>
+        </div>
       </div>
       <div class="submit" v-else>
         <button v-on:click="login">用 github 登入以建立 Pull Request</button>

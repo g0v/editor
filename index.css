@@ -51,7 +51,11 @@ body {
   outline: none;
 }
 
-#app > div > button {
+button.submitting {
+  background-color: grey;
+}
+
+button {
   /*Reset's every elements apperance*/
   background: none repeat scroll 0 0 transparent;
   border: medium none;

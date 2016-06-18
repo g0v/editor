@@ -11,7 +11,8 @@ var app = new Vue({
         username: "",
         conn: undefined,
         user: undefined,
-        repo: ""
+        repo: "",
+        submitting: false
     },
     created() {
         schema.forEach(function(x,i) {
@@ -47,6 +48,7 @@ var app = new Vue({
         },
 
         submit() {
+            app.submitting = true
             var result = {}
             schema.forEach((x) => {
                 var val = $(`input[name=${x.name}`).val()
@@ -120,7 +122,8 @@ var app = new Vue({
                     base: `master`
                 })})
             }).then(function () {
-                alert('PR created')
+                alert('PR 建立完成')
+                app.submitting = false
             })
         }
     }
