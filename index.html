@@ -6,12 +6,6 @@
   </head>
   <body>
     <div id="app">
-      <div v-if="logged_in">
-        hi, {{username}}
-      </div>
-      <div v-else>
-        <a href="#" v-on:click="login">Login with github</a>
-      </div>
       <br />
       <div>
         Repo (ooo/xxx): <input v-model="repo">
@@ -19,7 +13,12 @@
       <div v-for="i in schema">
         {{ i.label }}: <input type="{{i.type}}" name="{{i.name}}" placeholder="{{i.placeholder}}" value="{{i.prefill}}">
       </div>
-      <button v-on:click="submit" type="submit">Submit</button>
+      <div v-if="logged_in">
+        <button v-on:click="submit" type="submit">建立 Pull Request</button>
+      </div>
+      <div v-else>
+        <a href="#" v-on:click="login">用 github 登入以建立 Pull Request</a>
+      </div>
       <pre>
         {{ result }}
       </pre>
