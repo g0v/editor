@@ -13,3 +13,7 @@ https://poga.github.io/metadata-editor/?repo=g0v/datasmith&name=datasmith&name_z
 便可得到包含預先填好的表單的編輯器。
 
 表單內容參考 `schema.json`
+
+## TODO
+
+- [ ] Form Validation
