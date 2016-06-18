@@ -14,6 +14,14 @@ https://poga.github.io/metadata-editor/?repo=g0v/datasmith&name=datasmith&name_z
 
 表單內容參考 `schema.json`
 
+### Configuration
+
+You can specify target file name with URL params:
+
+```
+https://poga.github.io/metadata-editor/?target=civil.json
+```
+
 ## TODO
 
 - [ ] Form Validation

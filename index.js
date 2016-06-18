@@ -61,7 +61,8 @@ var app = new Vue({
             })
             app.result = JSON.stringify(result)
 
-            this.commit("g0v.json", app.result)
+            var target_filename = getParameterByName("target")
+            this.commit(target_filename, app.result)
         },
 
         commit(filename, content) {
@@ -97,7 +98,7 @@ var app = new Vue({
             .then(function (currentHEADtree) {
                 return app.conn.post(`/repos/${x.login}/${fork.name}/git/trees`, {data: JSON.stringify({base_tree: currentHEADtree.sha, tree: [
                     {
-                        path: "g0v.json",
+                        path: filename,
                         mode: "100644",
                         type: "blob",
                         sha: newBlob.sha
@@ -106,17 +107,17 @@ var app = new Vue({
             })
             .then(function (newTree) {
                 return app.conn.post(`/repos/${x.login}/${fork.name}/git/commits`, { data: JSON.stringify({
-                    message: "update g0v.json",
+                    message: `update ${filename}`,
                     tree: newTree.sha,
                     parents: [currentHEADCommit.sha]})})
             })
             .then(function (newCommit) {
-                branch = `update-g0v-json-${Date.now()}`
+                branch = `update-${filename}-${Date.now()}`
                 return app.conn.post(`/repos/${x.login}/${fork.name}/git/refs`, { data: JSON.stringify({sha: newCommit.sha, ref: `refs/heads/${branch}`})})
             })
             .then(function (newRef) {
                 return app.conn.post(`/repos/${app.repo}/pulls`, { data: JSON.stringify({
-                    title: "update g0v.json",
+                    title: `update ${filename}`,
                     body: "this is a pull request from metadata-editor",
                     head: `${x.login}:${branch}`,
                     base: `master`
