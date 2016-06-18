@@ -56,6 +56,7 @@ button.submitting {
 }
 
 button {
+  cursor: pointer;
   /*Reset's every elements apperance*/
   background: none repeat scroll 0 0 transparent;
   border: medium none;
