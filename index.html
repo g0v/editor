@@ -13,6 +13,9 @@
         <a href="#" v-on:click="login">Login with github</a>
       </div>
       <br />
+      <div>
+        Repo (ooo/xxx): <input v-model="repo">
+      </div>
       <div v-for="i in schema">
         {{ i.label }}: <input type="{{i.type}}" name="{{i.name}}" placeholder="{{i.placeholder}}" value="{{i.prefill}}">
       </div>
