@@ -3,42 +3,42 @@ var schema = [
         type: "text",
         name: "author",
         placeholder: "you",
-        label: "Author",
+        label: "專案作者",
         optional: false
     },
     {
         type: "text",
         name: "status",
         placeholder: "planning",
-        label: "Status",
+        label: "專案狀態",
         optional: false
     },
     {
         type: "text",
         name: "name",
         placeholder: "project name",
-        label: "Name",
+        label: "專案名稱（英文）",
         optional: false
     },
     {
         type: "text",
         name: "name_zh",
         placeholder: "project name in zh",
-        label: "中文名稱",
+        label: "專案名稱（中文）",
         optional: false
     },
     {
         type: "text",
         name: "description",
         placeholder: "description",
-        label: "Description",
+        label: "專案描述（英文）",
         optional: false
     },
     {
         type: "text",
         name: "description_zh",
         placeholder: "description_zh",
-        label: "中文敘述",
+        label: "專案描述（中文）",
         optional: false
     },
     {
@@ -52,28 +52,28 @@ var schema = [
         type: "text",
         name: "thumbnail",
         placeholder: "thumbnail",
-        label: "thumbnail",
+        label: "預覽圖",
         optional: false
     },
     {
         type: "text",
         name: "document",
         placeholder: "document",
-        label: "document",
+        label: "文件網址",
         optional: false
     },
     {
         type: "text",
         name: "repository",
         placeholder: "repository url",
-        label: "repository",
+        label: "Repo 網址",
         optional: false
     },
     {
         type: "text",
         name: "licenses",
         placeholder: "licenses",
-        label: "licenses",
+        label: "授權方式",
         optional: false,
         array: true
     },
@@ -81,7 +81,7 @@ var schema = [
         type: "text",
         name: "keywords",
         placeholder: "foo, bar",
-        label: "keywords",
+        label: "關鍵字",
         optional: false,
         array: true
     },
@@ -89,7 +89,7 @@ var schema = [
         type: "text",
         name: "audience",
         placeholder: "public",
-        label: "audience",
+        label: "目標受眾",
         optional: false,
         array: true
     },
@@ -97,7 +97,7 @@ var schema = [
         type: "text",
         name: "products",
         placeholder: "urls...",
-        label: "products",
+        label: "產出網址",
         optional: false,
         array: true
     },
@@ -112,7 +112,7 @@ var schema = [
         type: "text",
         name: "contributors",
         placeholder: "contributors...",
-        label: "contributors",
+        label: "貢獻者",
         optional: false,
         array: true
     },
@@ -120,7 +120,7 @@ var schema = [
         type: "text",
         name: "needs",
         placeholder: "needs...",
-        label: "Needs",
+        label: "徵求",
         optional: false,
         array: true
     },
