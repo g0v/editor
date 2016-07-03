@@ -15,21 +15,33 @@ var app = new Vue({
         submitting: false
     },
     created() {
-        schema.forEach(function(x,i) {
-            var prefill = getParameterByName(x.name)
+        this.prefill_from_query()
 
-            if (prefill !== "") {
-                schema[i].prefill = prefill
-            }
-        })
-
-        // prefill repo
         var prefill_repo = getParameterByName("repo")
         if (prefill_repo !== "") {
             this.repo = prefill_repo
+            $.getJSON(`https://raw.githubusercontent.com/${prefill_repo}/master/g0v.json`, (data) => {
+                Object.keys(data).forEach((k) => {
+                  schema.forEach((x, i) => {
+                    if (x.name === k) {
+                      schema.$set(i, Object.assign({prefill: data[k]}, schema[i]))
+                    }
+                  })
+                })
+                this.prefill_from_query()
+            })
         }
     },
     methods: {
+        prefill_from_query() {
+            schema.forEach(function(x,i) {
+                var prefill = getParameterByName(x.name)
+
+                if (prefill !== null) {
+                    schema.$set(i, Object.assign({prefill: prefill}, schema[i]))
+                }
+            })
+        },
         login() {
             OAuth.initialize(oauthKey)
             OAuth.popup('github').done(function(result) {
@@ -139,4 +151,3 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-
