@@ -16,39 +16,54 @@ var app = new Vue({
     created() {
         $.ajax("https://raw.githubusercontent.com/g0v/g0v.json/master/schemas/v1.json", {
           success: (data) => {
-            var schema = this.schema = JSON.parse(data).properties;
-            console.log(schema)
-            var prefill_repo = getParameterByName("repo")
-            if (prefill_repo !== "") {
-                this.repo = prefill_repo
-                $.getJSON(`https://raw.githubusercontent.com/${prefill_repo}/master/g0v.json`, (data) => {
-                    Object.keys(data).forEach((k) => {
-                      Object.keys(this.schema).forEach((name, i) => {
-                        if (name === k) {
-                          Vue.set(this.schema, k, Object.assign({prefill: data[k]}, this.schema[k]))
-                        }
-                      })
-                    })
-                    Object.keys(this.schema).forEach((name,i) => {
-                        var prefill = getParameterByName(name)
+              var schema = this.schema = JSON.parse(data).properties;
+              var prefill_repo = getParameterByName("repo")
+              if (prefill_repo !== "") {
+                  this.repo = prefill_repo
+                  $.ajax(`https://raw.githubusercontent.com/${prefill_repo}/master/g0v.json`,
+                         {
+                             success: (existed) => {
+                                 existed = JSON.parse(existed)
+                                 console.log(existed)
 
-                        if (prefill !== null) {
-                            if (this.schema[name].prefill) {
-                              this.schema[name].prefill = prefill
-                            } else {
-                              Vue.set(this.schema, name, Object.assign({prefill: prefill}, this.schema[name]))
-                            }
-                        }
-                    })
-                })
-            }
+                                 Object.keys(existed).forEach((k) => {
+                                     Object.keys(this.schema).forEach((name, i) => {
+                                       //console.log(name, k)
+                                         if (name === k) {
+                                             Vue.set(this.schema, k, Object.assign({prefill: existed[k]}, this.schema[k]))
+                                             console.log("prefill from target repo", k, existed[k], this.schema[k].prefill)
+                                         }
+                                     })
+                                 })
+                                 this.prefill_from_query()
+                             },
+                             error: (xhr) => {
+                                 console.log("failed to load target repo g0v.json")
+                                 this.prefill_from_query()
+                             }
+                         })
+              }
           },
-          fail: (xhr) => {
-            console.log("fail to load schema");
+          error: (xhr) => {
+              console.log("fail to load schema");
           },
         });
     },
     methods: {
+        prefill_from_query() {
+            Object.keys(this.schema).forEach((name,i) => {
+                var prefill = getParameterByName(name)
+
+                if (prefill !== null) {
+                    if (this.schema[name].prefill) {
+                        this.schema[name].prefill = prefill
+                    } else {
+                        Vue.set(this.schema, name, Object.assign({prefill: prefill}, this.schema[name]))
+                    }
+                    console.log("prefill from query", name, prefill, this.schema[name].prefill)
+                }
+            })
+        },
         login() {
             OAuth.initialize(oauthKey)
             OAuth.popup('github').done(function(result) {
