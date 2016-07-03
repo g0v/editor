@@ -11,7 +11,7 @@ export default {
   output: {
     path: path.join(__dirname, "dist"),
     filename: "[name].js",
-    publicPath: "/",
+    publicPath: process.env.PUBLIC_PATH || "/editor/",
   },
 
   resolve: {
