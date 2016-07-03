@@ -17,11 +17,9 @@
       </p>
     </div>
     <div id="app">
-      <div>
-        <label>Repo (ooo/xxx):</label> <input v-model="repo">
-      </div>
-      <div v-for="i in schema">
-        <label><span v-if="!i.optional">*</span>{{ i.label }}: </label><input type="{{i.type}}" name="{{i.name}}" placeholder="{{i.placeholder}}" value="{{i.prefill}}">
+      <div v-for="(name, i) in schema">
+        <label><span v-if="i.required">*</span> {{ i.title }}: </label>
+        <input type="text" name="{{name}}" placeholder="{{i.description}}" value="{{i.prefill}}">
       </div>
       <br />
       <div class="submit" v-if="logged_in">
@@ -41,6 +39,5 @@
     </div>
   </body>
 
-  <script src="schema.js"></script>
   <script src="index.js"></script>
 </html>

@@ -5,43 +5,50 @@ var app = new Vue({
     el: '#app',
     data: {
         message: "hello",
-        schema: schema,
+        schema: {},
         result: "" ,
         logged_in: false,
         username: "",
         conn: undefined,
         user: undefined,
-        repo: "",
         submitting: false
     },
     created() {
-        this.prefill_from_query()
+        $.ajax("https://raw.githubusercontent.com/g0v/g0v.json/master/schemas/v1.json", {
+          success: (data) => {
+            var schema = this.schema = JSON.parse(data).properties;
+            console.log(schema)
+            var prefill_repo = getParameterByName("repo")
+            if (prefill_repo !== "") {
+                this.repo = prefill_repo
+                $.getJSON(`https://raw.githubusercontent.com/${prefill_repo}/master/g0v.json`, (data) => {
+                    Object.keys(data).forEach((k) => {
+                      Object.keys(this.schema).forEach((name, i) => {
+                        if (name === k) {
+                          Vue.set(this.schema, k, Object.assign({prefill: data[k]}, this.schema[k]))
+                        }
+                      })
+                    })
+                    Object.keys(this.schema).forEach((name,i) => {
+                        var prefill = getParameterByName(name)
 
-        var prefill_repo = getParameterByName("repo")
-        if (prefill_repo !== "") {
-            this.repo = prefill_repo
-            $.getJSON(`https://raw.githubusercontent.com/${prefill_repo}/master/g0v.json`, (data) => {
-                Object.keys(data).forEach((k) => {
-                  schema.forEach((x, i) => {
-                    if (x.name === k) {
-                      schema.$set(i, Object.assign({prefill: data[k]}, schema[i]))
-                    }
-                  })
+                        if (prefill !== null) {
+                            if (this.schema[name].prefill) {
+                              this.schema[name].prefill = prefill
+                            } else {
+                              Vue.set(this.schema, name, Object.assign({prefill: prefill}, this.schema[name]))
+                            }
+                        }
+                    })
                 })
-                this.prefill_from_query()
-            })
-        }
+            }
+          },
+          fail: (xhr) => {
+            console.log("fail to load schema");
+          },
+        });
     },
     methods: {
-        prefill_from_query() {
-            schema.forEach(function(x,i) {
-                var prefill = getParameterByName(x.name)
-
-                if (prefill !== null) {
-                    schema.$set(i, Object.assign({prefill: prefill}, schema[i]))
-                }
-            })
-        },
         login() {
             OAuth.initialize(oauthKey)
             OAuth.popup('github').done(function(result) {
@@ -62,19 +69,17 @@ var app = new Vue({
         submit() {
             app.submitting = true
             var result = {}
-            schema.forEach((x) => {
-                var val = $(`input[name=${x.name}`).val()
+            $.each(this.schema, (name, i) => {
+                var val = $(`input[name=${name}`).val()
                 if (val !== "") {
-                    if (x.array) {
+                    if (i.type == "array") {
                         val = val.split(',')
                     }
-                    result[x.name] = val
+                    result[name] = val
                 }
             })
             app.result = JSON.stringify(result)
-
-            var target_filename = getParameterByName("target")
-            this.commit(target_filename, app.result)
+            this.commit("g0v.json", app.result)
         },
 
         commit(filename, content) {
@@ -84,7 +89,7 @@ var app = new Vue({
             var branch
             var fork
             new Promise(function(out_resolve, reject) {
-                app.conn.post(`/repos/${app.repo}/forks`)
+                app.conn.post(`/repos/${app.schema.repo.prefill}/forks`)
                 .done(function (user_fork) {
                 fork = user_fork
                 })
@@ -108,14 +113,19 @@ var app = new Vue({
                 return app.conn.get(currentHEADCommit.tree.url)
             })
             .then(function (currentHEADtree) {
-                return app.conn.post(`/repos/${x.login}/${fork.name}/git/trees`, {data: JSON.stringify({base_tree: currentHEADtree.sha, tree: [
-                    {
-                        path: filename,
-                        mode: "100644",
-                        type: "blob",
-                        sha: newBlob.sha
-                    }
-                ]})})
+                return app.conn.post(`/repos/${x.login}/${fork.name}/git/trees`, {
+                  data: JSON.stringify({
+                          base_tree: currentHEADtree.sha,
+                          tree: [
+                            {
+                              path: filename,
+                              mode: "100644",
+                              type: "blob",
+                              sha: newBlob.sha
+                            }
+                          ]
+                  })
+                })
             })
             .then(function (newTree) {
                 return app.conn.post(`/repos/${x.login}/${fork.name}/git/commits`, { data: JSON.stringify({
@@ -128,7 +138,7 @@ var app = new Vue({
                 return app.conn.post(`/repos/${x.login}/${fork.name}/git/refs`, { data: JSON.stringify({sha: newCommit.sha, ref: `refs/heads/${branch}`})})
             })
             .then(function (newRef) {
-                return app.conn.post(`/repos/${app.repo}/pulls`, { data: JSON.stringify({
+                return app.conn.post(`/repos/${app.schema.repo.prefill}/pulls`, { data: JSON.stringify({
                     title: `update ${filename}`,
                     body: "this is a pull request from metadata-editor",
                     head: `${x.login}:${branch}`,
