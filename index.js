@@ -93,7 +93,7 @@ var app = new Vue({
                     result[name] = val
                 }
             })
-            app.result = JSON.stringify(result)
+            app.result = JSON.stringify(result, null, "  ")
             this.commit("g0v.json", app.result)
         },
 
