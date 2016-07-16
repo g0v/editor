@@ -91,6 +91,10 @@ var app = new Vue({
                         val = val.split(',')
                     }
                     result[name] = val
+
+                    if (name === "repo") {
+                      app.schema.repo.prefill = val
+                    }
                 }
             })
             app.result = JSON.stringify(result, null, "  ")
@@ -106,7 +110,7 @@ var app = new Vue({
             new Promise(function(out_resolve, reject) {
                 app.conn.post(`/repos/${app.schema.repo.prefill}/forks`)
                 .done(function (user_fork) {
-                fork = user_fork
+                    fork = user_fork
                 })
                 // wait until fork complete
                 setTimeout(function() {
