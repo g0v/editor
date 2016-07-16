@@ -18,7 +18,7 @@ var app = new Vue({
           success: (data) => {
               var schema = this.schema = JSON.parse(data).properties;
               var prefill_repo = getParameterByName("repo")
-              if (prefill_repo !== "") {
+              if (prefill_repo && prefill_repo !== "") {
                   this.repo = prefill_repo
                   $.ajax(`https://raw.githubusercontent.com/${prefill_repo}/master/g0v.json`,
                          {
