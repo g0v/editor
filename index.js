@@ -11,7 +11,8 @@ var app = new Vue({
         username: "",
         conn: undefined,
         user: undefined,
-        submitting: false
+        submitting: false,
+        target_json_exists: false
     },
     created() {
         $.ajax("https://raw.githubusercontent.com/g0v/g0v.json/master/schemas/v1.json", {
@@ -31,6 +32,7 @@ var app = new Vue({
                                        //console.log(name, k)
                                          if (name === k) {
                                              Vue.set(this.schema, k, Object.assign({prefill: existed[k]}, this.schema[k]))
+                                             this.target_json_exists = true
                                              console.log("prefill from target repo", k, existed[k], this.schema[k].prefill)
                                          }
                                      })
