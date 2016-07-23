@@ -5,6 +5,7 @@ body {
 .banner {
   margin-bottom: 30px;
   text-align: center;
+  color: red;
 }
 
 #header {
