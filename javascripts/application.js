@@ -1,4 +1,10 @@
-// key from oauth.io
+import Vue from "vue";
+import $ from "jquery";
+import { OAuth } from "oauthio-web";
+import styles from "index";
+import logo from "logo.png";
+import { getParameterByName } from "params";
+
 const oauthKey = 'M-bBVCTcOy9vIq7TRkJoL17N6LQ'
 
 var app = new Vue({
@@ -172,13 +178,3 @@ var app = new Vue({
         }
     }
 })
-
-function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
