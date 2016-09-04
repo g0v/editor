@@ -4,18 +4,21 @@ import { OAuth } from "oauthio-web";
 import styles from "index";
 import logo from "logo.png";
 import { getParameterByName } from "params";
+import Github from "./github";
 
 const oauthKey = 'M-bBVCTcOy9vIq7TRkJoL17N6LQ'
+
+function complete(pull) {
+  console.log(`Created pull request ${pull.url}`);
+  app.submitting = false
+}
 
 var app = new Vue({
     el: '#app',
     data: {
-        message: "hello",
         schema: {},
-        result: "" ,
         logged_in: false,
-        username: "",
-        conn: undefined,
+        github: undefined,
         user: undefined,
         submitting: false,
         target_json_exists: false
@@ -73,20 +76,14 @@ var app = new Vue({
             })
         },
         login() {
-            OAuth.initialize(oauthKey)
-            OAuth.popup('github').done(function(result) {
-                app.conn = result
-                result.get('/user')
-                .done(function(resp) {
-                    app.username = resp.name
-                    app.logged_in = true
-                    app.user = resp
-                })
-            })
-            .fail(function (err) {
-                //handle error with err
-                console.error(err)
-            })
+          OAuth.initialize(oauthKey)
+          OAuth.popup('github').done(function(connection) {
+            app.github = new Github(connection);
+            connection.get('/user').done(function(user) { app.user = user; app.logged_in = true; })
+          })
+          .fail(function (err) {
+            console.error(err)
+          })
         },
 
         submit() {
@@ -105,76 +102,26 @@ var app = new Vue({
                     }
                 }
             })
-            app.result = JSON.stringify(result, null, "  ")
-            this.commit("g0v.json", app.result)
+            this.commit("g0v.json", JSON.stringify(result, null, "  "))
         },
 
         commit(filename, content) {
-            var x = app.user
-            var currentHEADCommit
-            var newBlob
-            var branch
-            var fork
-            new Promise(function(out_resolve, reject) {
-                app.conn.post(`/repos/${app.schema.repo.prefill}/forks`)
-                .done(function (user_fork) {
-                    fork = user_fork
-                })
-                // wait until fork complete
-                setTimeout(function() {
-                    out_resolve(0)
-                }, 3000)
-            })
-            .then(function() {
-                return app.conn.get(`/repos/${x.login}/${fork.name}/git/refs/heads/master`)
-            })
-            .then(function (currentHEAD) {
-                return app.conn.get(currentHEAD.object.url)
-            })
-            .then(function (HEADCommit) {
-                currentHEADCommit = HEADCommit
-                return app.conn.post(`/repos/${x.login}/${fork.name}/git/blobs`, {data: JSON.stringify({content: content, encoding: "utf-8"})})
-            })
-            .then(function (blob) {
-                newBlob = blob
-                return app.conn.get(currentHEADCommit.tree.url)
-            })
-            .then(function (currentHEADtree) {
-                return app.conn.post(`/repos/${x.login}/${fork.name}/git/trees`, {
-                  data: JSON.stringify({
-                          base_tree: currentHEADtree.sha,
-                          tree: [
-                            {
-                              path: filename,
-                              mode: "100644",
-                              type: "blob",
-                              sha: newBlob.sha
-                            }
-                          ]
-                  })
-                })
-            })
-            .then(function (newTree) {
-                return app.conn.post(`/repos/${x.login}/${fork.name}/git/commits`, { data: JSON.stringify({
-                    message: `update ${filename}`,
-                    tree: newTree.sha,
-                    parents: [currentHEADCommit.sha]})})
-            })
-            .then(function (newCommit) {
-                branch = `update-${filename}-${Date.now()}`
-                return app.conn.post(`/repos/${x.login}/${fork.name}/git/refs`, { data: JSON.stringify({sha: newCommit.sha, ref: `refs/heads/${branch}`})})
-            })
-            .then(function (newRef) {
-                return app.conn.post(`/repos/${app.schema.repo.prefill}/pulls`, { data: JSON.stringify({
-                    title: `update ${filename}`,
-                    body: "this is a pull request from metadata-editor",
-                    head: `${x.login}:${branch}`,
-                    base: `master`
-                })})
-            }).then(function () {
-                alert('PR 建立完成')
-                app.submitting = false
-            })
+          new Promise(function(resolve, reject) {
+            app.github.owner = app.user.login;
+            app.github.filename = filename;
+            [app.github.author, app.github.repo] = app.schema.repo.prefill.split("/")
+            app.github.createFork().done(resolve);
+          })
+          .then(function(fork) { return app.github.createBlob(content) })
+          .then(function(blob) { app.github.blob = blob; return "master" })
+          .then(app.github.getReference.bind(app.github))
+          .then(app.github.getCommit.bind(app.github))
+          .then(function (commit) { app.github.commit = commit; return app.github.getTree(commit); })
+          .then(app.github.createTree.bind(app.github))
+          .then(app.github.createCommit.bind(app.github))
+          .then(app.github.createReference.bind(app.github))
+          .then(app.github.createPullRequest.bind(app.github))
+          .then(complete);
         }
     }
 })
