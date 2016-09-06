@@ -31,6 +31,10 @@ export default {
         loader: ExtractTextPlugin.extract("style", "css"),
       },
       {
+        test: /\.json$/,
+        loader: 'json',
+      },
+      {
         test: /\.(png|jpg)$/,
         loader: "file?name=[name].[ext]",
       },
