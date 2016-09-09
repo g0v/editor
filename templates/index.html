@@ -7,34 +7,12 @@
       <img src="logo.png"/>
       <h1>g0v metadata editor</h1>
       <p>
-      The form below will help you build a valid g0v.json file.
-      Fill out all of the required fields (marked by a star) and any others.
-      Next, you can click the buttons at the bottom of the page to render and create a Pull Request to target repository.
+        The form below will help you build a valid g0v.json file.
+        Fill out all of the required fields (marked by a star) and any others.
+        Next, you can click the buttons at the bottom of the page to render and create a Pull Request to target repository.
       </p>
     </div>
-    <div id="app">
-      <div v-if="target_json_exists" class="banner">
-        Target repo has g0v.json already.
-      </div>
-      <div v-for="(name, i) in schema">
-        <label><span v-if="i.required">*</span> {{ i.title }}: </label>
-        <input type="text" name="{{name}}" placeholder="{{i.description}}" value="{{i.prefill}}">
-      </div>
-      <br />
-      <div class="submit" v-if="logged_in">
-        <div v-if="submitting">
-          <button class="submitting">建立中...</button>
-        </div>
-        <div v-else>
-          <button id="submit-button" v-on:click="submit" type="submit">建立 Pull Request</button>
-        </div>
-      </div>
-      <div class="submit" v-else>
-        <button v-on:click="login">用 github 登入以建立 Pull Request</button>
-      </div>
-      <pre>
-        {{ result }}
-      </pre>
-    </div>
+
+    <div id="react-root"></div>
   </body>
 </html>

@@ -28,19 +28,19 @@ body {
   width: 400px;
 }
 
-#app {
+#react-root {
   padding-top: 50px;
   width: 500px;
   margin: 0 auto;
 }
 
-#app > div > label {
+div > label {
   display: block;
   size: 15px;
   color: #000000;
 }
 
-#app > div > input {
+div > input {
   width: 100%;
   /* Rectangle 1: */
   border: 1px solid #C5C5C5;
@@ -51,7 +51,7 @@ body {
   padding: 5px;
 }
 
-#app > div > input:focus {
+div > input:focus {
   /* Rectangle 1: */
   border: 1px solid #05D4A6;
   border-radius: 4px;
