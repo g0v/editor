@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { Router, Route, Link, browserHistory } from 'react-router';
 import { OAuth } from "oauthio-web";
 import Github from "github";
 import Form from "components/Form";
 import Login from "components/Login";
-import Search from "components/Search";
 
 class Root extends Component {
   constructor(props) {
@@ -27,13 +25,9 @@ class Root extends Component {
   }
 
   render() {
-    return <Router history={browserHistory}>
-      <Route path="*"       component={Login} />
-      <Route path="editor"  component={Login}>
-        <Route path="search"  component={Search}  />
-        <Route path="form"    component={Form}    />
-      </Route>
-    </Router>;
+    return <div>
+      { this.state.github ? <Form github={this.state.github} /> : <Login login={this.login.bind(this)} /> }
+    </div>;
   }
 }
 
