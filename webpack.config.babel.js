@@ -43,7 +43,12 @@ export default {
 
   plugins: [
     new HtmlWebpackPlugin({
+      filename: "index.html",
       template: "templates/index.html",
+    }),
+    new HtmlWebpackPlugin({
+      filename: "search.html",
+      template: "templates/search.html",
     }),
     new ExtractTextPlugin("index.css", {
       allChunks: true
