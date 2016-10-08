@@ -28,12 +28,6 @@ body {
   width: 400px;
 }
 
-#react-root {
-  padding-top: 50px;
-  width: 500px;
-  margin: 0 auto;
-}
-
 div > label {
   display: block;
   size: 15px;
@@ -94,4 +88,7 @@ button {
 
 .submit {
   text-align: center;
+  padding-top: 50px;
+  width: 500px;
+  margin: 0 auto;
 }
