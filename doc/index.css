@@ -1,0 +1,97 @@
+body {
+  margin: 0 auto;
+}
+
+.banner {
+  margin-bottom: 30px;
+  text-align: center;
+  color: green;
+}
+
+#header {
+  width: 100%;
+  text-align: center;
+  background-color: #F4F4F4;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+#header > h1 {
+  /* This is a title : */
+  font-family: Helvetica;
+  font-size: 24px;
+  color: #000000;
+}
+
+#header > p {
+  margin: 0 auto;
+  width: 400px;
+}
+
+#react-root {
+  padding-top: 50px;
+  width: 500px;
+  margin: 0 auto;
+}
+
+div > label {
+  display: block;
+  size: 15px;
+  color: #000000;
+}
+
+div > input {
+  width: 100%;
+  /* Rectangle 1: */
+  border: 1px solid #C5C5C5;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  padding: 5px;
+}
+
+div > input:focus {
+  /* Rectangle 1: */
+  border: 1px solid #05D4A6;
+  border-radius: 4px;
+  outline: none;
+}
+
+button.submitting {
+  background-color: grey;
+}
+
+button {
+  cursor: pointer;
+  /*Reset's every elements apperance*/
+  background: none repeat scroll 0 0 transparent;
+  border: medium none;
+  border-spacing: 0;
+  color: #26589F;
+  font-family: 'PT Sans Narrow',sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.42rem;
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  text-decoration: none;
+  text-indent: 0;
+  /* Render: */
+  font-family: Helvetica;
+  font-size: 18px;
+  color: #FFFFFF;
+  /* Rectangle 1: */
+  background: #05D4A6;
+  border-radius: 4px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.submit {
+  text-align: center;
+}

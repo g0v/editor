@@ -9,7 +9,7 @@ export default {
   },
 
   output: {
-    path: path.join(__dirname, "dist"),
+    path: path.join(__dirname, "doc"),
     filename: "[name].js",
     publicPath: process.env.PUBLIC_PATH || "/",
   },
