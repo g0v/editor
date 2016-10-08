@@ -19,5 +19,3 @@ const component = (
 OAuth.initialize(oauthKey);
 
 ReactDOM.render(component, document.getElementById("react-root"));
-
-browserHistory.push("/search")
