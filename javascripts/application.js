@@ -11,6 +11,7 @@ import Search from "components/Search";
 const oauthKey  = 'M-bBVCTcOy9vIq7TRkJoL17N6LQ'
 const component = (
   <Router history={browserHistory}>
+    <Route path="*"      component={Root} />
     <Route path="editor" component={Root} />
     <Route path="search" component={Search} />
   </Router>
