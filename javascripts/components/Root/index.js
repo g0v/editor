@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Link } from "react-router";
 import { OAuth } from "oauthio-web";
 import Github from "github";
 import Form from "components/Form";
 import Login from "components/Login";
+import Header from "components/Header";
 
 class Root extends Component {
   constructor(props) {
@@ -26,6 +28,7 @@ class Root extends Component {
 
   render() {
     return <div>
+      <Header />
       <div id="header">
         <img src="logo.png"/>
         <h1>g0v metadata editor</h1>
