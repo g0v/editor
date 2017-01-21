@@ -54,7 +54,7 @@ class Form extends Component {
     var [name, attribute] = pair;
     return <div key={name}>
       <label><span>*</span> { attribute.title }: </label>
-      <input type="text" name={`content.${name}`} placeholder={attribute.description} value={normalizeValue(this.state.content[name] || "")} onChange={this.change.bind(this)} />
+      <input type="text" name={`content.${name}`} placeholder={attribute.description} value={this.state.content[name] || ""} onChange={this.change.bind(this)} />
     </div>;
   }
 
@@ -107,9 +107,3 @@ class Form extends Component {
 }
 
 export default Form;
-
-function normalizeValue (value) {
-  if (typeof value === 'object') return JSON.stringify(value)
-
-  return value
-}
