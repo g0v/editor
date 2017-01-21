@@ -47,14 +47,24 @@ class Form extends Component {
   }
 
   change(e) {
-    this.set(e.target.name, e.target.value);
+    try {
+      // if value is json object
+      var obj = JSON.parse(e.target.value)
+      this.set(e.target.name, obj)
+    } catch (exception) {
+      this.set(e.target.name, e.target.value);
+    }
   }
 
   column(pair) {
     var [name, attribute] = pair;
+    var value = this.state.content[name] || ""
+    if (name === 'licenses' || name === 'repository') {
+      value = normalize(value)
+    }
     return <div key={name}>
       <label><span>*</span> { attribute.title }: </label>
-      <input type="text" name={`content.${name}`} placeholder={attribute.description} value={this.state.content[name] || ""} onChange={this.change.bind(this)} />
+      <input type="text" name={`content.${name}`} placeholder={attribute.description} value={value} onChange={this.change.bind(this)} />
     </div>;
   }
 
@@ -107,3 +117,9 @@ class Form extends Component {
 }
 
 export default Form;
+
+function normalize (value) {
+  if (typeof value === 'object') return JSON.stringify(value)
+
+  return value
+}
