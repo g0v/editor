@@ -48,5 +48,11 @@ export default {
     new ExtractTextPlugin("index.css", {
       allChunks: true
     }),
+    new ExtractTextPlugin("reset.css", {
+      allChunks: true,
+    }),
+    new ExtractTextPlugin("search.css", {
+      allChunks: true,
+    }),
   ],
 };

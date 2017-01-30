@@ -1,13 +1,22 @@
 import React from "react";
+import { Router, Route, Link, browserHistory } from 'react-router';
 import ReactDOM from "react-dom";
 import styles from "index";
 import logo from "logo.png";
 import { OAuth } from "oauthio-web";
 
 import Root from "components/Root";
+import Search from "components/Search";
 
 const oauthKey  = 'M-bBVCTcOy9vIq7TRkJoL17N6LQ'
-const component = (<Root />);
+const component = (
+  <Router history={browserHistory}>
+    <Route path="/editor" component={Root} />
+    <Route path="/search" component={Search} />
+
+    <Route path="*" component={Root} />
+  </Router>
+);
 
 OAuth.initialize(oauthKey);
 

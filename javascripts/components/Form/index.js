@@ -109,7 +109,7 @@ class Form extends Component {
   }
 
   render() {
-    return <div>
+    return <div className="submit">
       { Object.entries(schema).map(this.column.bind(this)) }
       { this.button() }
     </div>;

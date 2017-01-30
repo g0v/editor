@@ -1,0 +1,140 @@
+.WtabPage { display:none; }
+
+body {
+  font-size: 16px;
+  font-family: 'Helvetica Neue';
+}
+
+.bg-light-gray { background-color: #F5F5F5; }
+.bg-gray { background-color: #EDEDED; }
+.text-align-center { text-align: center; }
+select, button { cursor:pointer; }
+
+.nude_input { border:none; background-color:transparent; outline:none; }
+
+.first_search_logo {
+  margin-top: 180px;
+  border-bottom: 3px solid #5E5E5E;
+  padding-bottom: 8px;
+}
+.first_search_source {
+  margin: 24px 0;
+  width: auto;
+  color: #4A4A4A;
+  font-size: 40px;
+  font-weight: bolder;
+}
+.first_search_source:active {
+  font-size: 14px;
+}
+.first_search_keyword {
+  margin: 16px 0;
+  width: 720px;
+  height: 50px;
+  background-color: #F7F7F7;
+  border: 1px solid #BFBFBF;
+  border-radius: 2px;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  color: #333333;
+}
+
+.search_box {
+  width: 816px;
+  margin: 48px auto;
+  background-color: #F7F7F7;
+  border: 1px solid #BFBFBF;
+  border-radius: 2px;
+  box-shadow: 0 0 2px 2px rgba(0,0,0,0.02);
+}
+
+.search_bar {
+  height: 50px;
+  border-bottom: 1px solid #CCCCCC;
+}
+.search_keyword {
+  width:100%; height:100%;
+  padding-left: 50px;
+  background: url('images/icon_search.svg') no-repeat 14px 13px;
+  font-size: 18px;
+  font-weight: bolder;
+}
+
+.result_box {
+  padding: 40px 80px;
+}
+.sources_tabbar {
+  border-bottom: 1px solid #999999;
+}
+.source_tab {
+  margin-bottom: -1px;
+  padding: 10px 20px;
+  color: #999999;
+  font-weight: 300;
+  letter-spacing: 0.8px;
+}
+.source_tab_highlighted {
+  border-top: 1px solid #999999;
+  border-right: 1px solid #5E5E5E;
+  border-left: 1px solid  #CCCCCC;
+  border-radius: 1px;
+  background-color: #F7F7F7;
+  color: #333333;
+}
+.result_rows {
+  padding: 4px 5px;
+}
+.result_row {
+  margin-top: 40px;
+  font-family: 'Courier New';
+  line-height: 19px;
+}
+.highlighted_content {
+  margin-top: 5px;
+  color: #5E5E5E;
+  font-size: 14px;
+}
+.highlighted_content > em { color: #ED7476; }
+.github_name {
+  color: #4B7CBC;
+  font-family: 'Helvetica Neue';
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-decoration: none;
+}
+.github_description {
+  margin-top: 5px;
+  color: #4A4A4A;
+  font-size: 14px;
+  font-weight: 600;
+}
+.hackpad_name, .hackfoldr_name {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 17px;
+  color: #4A4A4A;
+  font-weight: bolder;
+  text-decoration: none;
+}
+.hackpad_name {
+  border-left: 4px solid #5A8873;
+  padding-left: 6px;
+}
+.hackfoldr_name {
+  padding-left: 24px;
+  background: url('images/folder.png') no-repeat left center;
+}
+
+.pagination {
+  margin-top: 80px;
+  padding-top: 15px;
+  border-top: 1px solid #999999;
+}
+.pagination_button {
+  margin: 0 5px;
+  padding: 0 5px;
+  color: #5E5E5E;
+  font-size: 15px;
+  font-weight: 300;
+  text-decoration: none;
+}

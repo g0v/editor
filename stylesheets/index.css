@@ -28,12 +28,6 @@ body {
   width: 400px;
 }
 
-#react-root {
-  padding-top: 50px;
-  width: 500px;
-  margin: 0 auto;
-}
-
 div > label {
   display: block;
   size: 15px;
@@ -58,11 +52,11 @@ div > input:focus {
   outline: none;
 }
 
-button.submitting {
+button.editor.submitting {
   background-color: grey;
 }
 
-button {
+button.editor {
   cursor: pointer;
   /*Reset's every elements apperance*/
   background: none repeat scroll 0 0 transparent;
@@ -94,4 +88,7 @@ button {
 
 .submit {
   text-align: center;
+  padding-top: 50px;
+  width: 500px;
+  margin: 0 auto;
 }
