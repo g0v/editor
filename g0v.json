@@ -1,1 +1,9 @@
-{"id":"poga/metadata-editor","author":"poga","name":"metadata-editor"}
+{
+  "author": "poga",
+  "name": "metadata-editor",
+  "repo": "g0v/editor",
+  "contributors": [
+    "aba",
+    "asd.asd"
+  ]
+}
