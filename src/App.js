@@ -80,7 +80,7 @@ function App() {
     <MuiThemeProvider theme={theme}>
       {showHeader &&
         <div className={classes.header}>
-          <img src="logo.png"/>
+          <img src="logo.png" alt="logo"/>
           <h1 className={classes.headerTitle}>g0v metadata editor</h1>
           <p className={classes.headerContent}>
             The form below will help you build a valid g0v.json file.

@@ -1,6 +1,6 @@
 # Metadata Editor
 
-線上 JSON Editor，可透過 GET 參數預先填入初始值。Github 登入後可自動發 Fork + create Pull Request
+[線上 JSON Editor](https://g0v.github.io/editor/)，可透過 GET 參數預先填入初始值。Github 登入後可自動發 Fork + create Pull Request
 
 ## Example
 
@@ -16,7 +16,11 @@ https://g0v.github.io/editor/?repo=g0v/datasmith&name=datasmith&name_zh=資料�
 
 ## Development
 
-`yarn.lock` is in the source tree. Run `yarn install` to ensure your dependencies are identical with locked versions.
+```bash
+yarn install
+yarn start
+# localhost:3000
+```
 
 ## Test
 

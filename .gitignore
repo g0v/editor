@@ -24,3 +24,5 @@ yarn-error.log*
 
 *.swp
 *.swo
+
+package-lock.json
